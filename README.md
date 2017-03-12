@@ -36,5 +36,12 @@ to make them work for you.
 
 Look into the `scripts/` directory to see how it works.  
 [xdotool manual](http://www.semicomplete.com/projects/xdotool/xdotool.xhtml).  
+Don't use `--sync`, otherwise xdotool halts the whole process if an error occurs.  
 
-**TODO:** Use [rasa NLU](https://github.com/golastmile/rasa_nlu) to parse complex commands.
+**TODO:** Use [rasa NLU](https://github.com/golastmile/rasa_nlu) to parse complex commands.  
+
+There are three types of actions:
+
+- simple commands (words/short sentences): e.g. "next" to play the next song
+- pattern matching commands (short sentences with parameters): e.g. "play music rick astley"
+- complex commands: using natural language understanding (TODO)

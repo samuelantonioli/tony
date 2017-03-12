@@ -1,4 +1,5 @@
 from os import system, getcwd
+import re
 
 SCRIPTS = '{}/scripts'.format(getcwd())
 
@@ -13,13 +14,22 @@ ACTIONS = {
     'loud': 'audio.raise',
 
     'quieter': 'audio.lower',
-    'quiete': 'audio.lower', # pronunciation differences
+    'quite': 'audio.lower', # pronunciation differences
     'quiet': 'audio.lower',
 
     'mute': 'audio.toggle_mute',
     'unmute': 'audio.toggle_mute',
     'on mute': 'audio.toggle_mute',
     'newt': 'audio.toggle_mute', # don't know why it detects this
+
+    # youtube
+    'close video': 'youtube.close',
+}
+
+PATTERN_ACTIONS = {
+    'search for (.+)': 'search',
+    'play music (.+)': 'spotify.search',
+    'play video (.+)': 'youtube.search',
 }
 
 def _exec_script(name, args = []):
@@ -44,7 +54,13 @@ def exec_command(command):
         if c == a:
             _exec_script(ACTIONS[a])
             return True
-    # second: nlu
+    # second: simple pattern matching commands
+    for p in PATTERN_ACTIONS:
+        m = re.match(p, c)
+        if m is not None:
+            _exec_script(PATTERN_ACTIONS[p], m.groups())
+            return True
+    # third: nlu
     p = _parse_command(command)
     if p is None:
         return False
