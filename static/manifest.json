@@ -1,0 +1,10 @@
+{
+  "name": "Tony",
+  "icons": [
+  ],
+  "start_url": "/",
+  "theme_color": "#00b8ff",
+  "display": "standalone",
+  "background_color": "#00b8ff",
+  "orientation": "portrait"
+}

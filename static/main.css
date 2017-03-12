@@ -1,0 +1,50 @@
+html {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+html, body {
+    height: 100%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+.container {
+    display: flex;
+    justify-content:center;
+    text-align:center;
+    align-items:center;
+    height: 100%;
+}
+#recognize {
+    outline: none;
+    user-select: none;
+    border-radius: 100px;
+    padding: 100px;
+    background: #00b8ff;
+    color: #fff;
+    font-size: 28px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+
+    display: flex;
+    justify-content:center;
+    text-align:center;
+    align-items:center;
+
+    transition: border-color 0.3s ease;
+    border: 5px solid #00b8ff;
+}
+#recognize.active {
+    transition: border-color 0.3s ease;
+    border-color: #00c4ff;
+}
+#output {
+    color: transparent;
+    display: block;
+    min-height: 20px;
+}
