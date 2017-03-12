@@ -17,7 +17,7 @@
         btn.classList.add('active');
 
         _stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
-            token: '{{token}}',
+            token: _token,
             continuous: false, // false = automatically stop transcription the first time a pause is detected
             outputElement: output // CSS selector or DOM Element
         });

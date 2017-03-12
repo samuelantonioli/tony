@@ -4,8 +4,6 @@ Build your own butler.
 Uses speech recognition to control your device.  
 Press the button and talk with him.
 
-![# Screenshot](screenshot.png)
-
 - Flask
 - xdotool
 - python 3.x
