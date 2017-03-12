@@ -18,7 +18,7 @@ def _parse_command(command):
     # https://rasa-nlu.readthedocs.io/en/latest/python.html#prediction-time
     # 
     # interpreter.parse(command)
-    # returns exec_action tuple: (name, args[])
+    # returns _exec_script tuple: (name, args[])
     # return ('youtube.search', ['rick astley'])
     return None
 
@@ -36,3 +36,4 @@ def exec_command(command):
     if p is None:
         return False
     _exec_script(p[0], p[1])
+    return True
