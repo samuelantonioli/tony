@@ -1,2 +1,6 @@
 #!/bin/bash
-xdotool key XF86AudioLowerVolume
+L="$1"
+if [ -z "$L" ]; then
+    L=1
+fi
+xdotool key --repeat $L XF86AudioLowerVolume

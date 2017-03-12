@@ -9,24 +9,16 @@ ACTIONS = {
     'previous': 'spotify.prev',
     'play': 'spotify.toggle_play',
     'stop': 'spotify.toggle_play',
-    # audio
-    'louder': 'audio.raise',
-    'loud': 'audio.raise',
-
-    'quieter': 'audio.lower',
-    'quite': 'audio.lower', # pronunciation differences
-    'quiet': 'audio.lower',
-
-    'mute': 'audio.toggle_mute',
-    'unmute': 'audio.toggle_mute',
-    'on mute': 'audio.toggle_mute',
-    'newt': 'audio.toggle_mute', # don't know why it detects this
-
     # youtube
     'close video': 'youtube.close',
 }
 
 PATTERN_ACTIONS = {
+    # audio
+    '(?:louder|loud)(?:\s+(\d+))?': 'audio.raise',
+    '(?:quieter|quiet|quite)(?:\s+(\d+))?': 'audio.lower',
+    '(?:mute|unmute|on mute|newt)': 'audio.toggle_mute', # don't know why it detects newt
+    # search
     'search (.+)': 'search',
     'play music (.+)': 'spotify.search',
     'play video (.+)': 'youtube.search',
@@ -38,7 +30,11 @@ SHORTCUTS = {
 }
 
 def _exec_script(name, args = []):
-    system('{}/{}.sh {}'.format(SCRIPTS, name, ' '.join(args)))
+    try:
+        system('{}/{}.sh {}'.format(SCRIPTS, name, ' '.join(args)))
+        return True
+    except Exception:
+        return False
 
 def _parse_command(command):
     # TODO:
@@ -67,17 +63,14 @@ def exec_command(command):
         return False
     for a in ACTIONS:
         if c == a:
-            _exec_script(ACTIONS[a])
-            return True
+            return _exec_script(ACTIONS[a])
     # second: simple pattern matching commands
     for p in PATTERN_ACTIONS:
         m = re.match(p, c)
         if m is not None:
-            _exec_script(PATTERN_ACTIONS[p], _replace_shortcuts(m.groups()))
-            return True
+            return _exec_script(PATTERN_ACTIONS[p], _replace_shortcuts(m.groups()))
     # third: nlu
     p = _parse_command(command)
     if p is None:
         return False
-    _exec_script(p[0], p[1])
-    return True
+    return _exec_script(p[0], p[1])
