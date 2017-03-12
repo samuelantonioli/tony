@@ -45,3 +45,9 @@ There are three types of actions:
 - simple commands (words/short sentences): e.g. "next" to play the next song
 - pattern matching commands (short sentences with parameters): e.g. "play music rick astley"
 - complex commands: using natural language understanding (TODO)
+
+## Caution!
+
+This system is not safe. It's passing user input to the shell.  
+So please just use it in safe private networks.
+I'll work on an API to use it safely.
