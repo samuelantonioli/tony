@@ -27,7 +27,7 @@ ACTIONS = {
 }
 
 PATTERN_ACTIONS = {
-    'search for (.+)': 'search',
+    'search (.+)': 'search',
     'play music (.+)': 'spotify.search',
     'play video (.+)': 'youtube.search',
 }
