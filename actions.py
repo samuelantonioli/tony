@@ -3,10 +3,23 @@ from os import system, getcwd
 SCRIPTS = '{}/scripts'.format(getcwd())
 
 ACTIONS = {
+    # spotify
     'next': 'spotify.next',
     'previous': 'spotify.prev',
     'play': 'spotify.toggle_play',
     'stop': 'spotify.toggle_play',
+    # audio
+    'louder': 'audio.raise',
+    'loud': 'audio.raise',
+
+    'quieter': 'audio.lower',
+    'quiete': 'audio.lower', # pronunciation differences
+    'quiet': 'audio.lower',
+
+    'mute': 'audio.toggle_mute',
+    'unmute': 'audio.toggle_mute',
+    'on mute': 'audio.toggle_mute',
+    'newt': 'audio.toggle_mute', # don't know why it detects this
 }
 
 def _exec_script(name, args = []):
