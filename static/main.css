@@ -47,4 +47,7 @@ html, body {
     color: transparent;
     display: block;
     min-height: 20px;
+    position: absolute;
+    left: 10px;
+    right: 10px;
 }
