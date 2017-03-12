@@ -41,7 +41,7 @@ def spotify_next():
 def spotify_prev():
     return _exec_script('spotify.prev')
 
-@action('spotify.toggle_play', '^(play|stop)$')
+@action('spotify.toggle_play', '^(?:play|stop)$')
 def spotify_toggle_play():
     return _exec_script('spotify.toggle_play')
 
