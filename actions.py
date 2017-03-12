@@ -31,6 +31,7 @@ SHORTCUTS = {
 
 def _exec_script(name, args = []):
     try:
+        args = filter(lambda x: x is not None, args)
         system('{}/{}.sh {}'.format(SCRIPTS, name, ' '.join(args)))
         return True
     except Exception:

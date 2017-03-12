@@ -1,5 +1,4 @@
 #!/bin/bash
-echo "$@"
 L="$1"
 if [ -z "$L" ]; then
     L=1
