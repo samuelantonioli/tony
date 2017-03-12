@@ -30,8 +30,10 @@ To start Tony:
 ## Add your own actions
 
 Use `actions.py` to define new one-word commands.  
-There are some examples to control [Spotify](https://github.com/samuelantonioli/spotify-for-linux),
-you have to modify them (update x and y values for the mouse clicks) so they work for you.  
+There are some examples to control [Spotify](https://github.com/samuelantonioli/spotify-for-linux),  
+you have to modify them (update x and y values for the mouse clicks)  
+to make them work for you.  
+
 Look into the `scripts/` directory to see how it works.  
 [xdotool manual](http://www.semicomplete.com/projects/xdotool/xdotool.xhtml).  
 
