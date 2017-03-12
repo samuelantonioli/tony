@@ -1,33 +1,27 @@
 from os import system, getcwd
 import re
 
-SCRIPTS = '{}/scripts'.format(getcwd())
-
-ACTIONS = {
-    # spotify
-    'next': 'spotify.next',
-    'previous': 'spotify.prev',
-    'play': 'spotify.toggle_play',
-    'stop': 'spotify.toggle_play',
-    # youtube
-    'close video': 'youtube.close',
-}
-
-PATTERN_ACTIONS = {
-    # audio
-    '(?:louder|loud)(?:\s+(\d+))?': 'audio.raise',
-    '(?:quieter|quiet|quite)(?:\s+(\d+))?': 'audio.lower',
-    '(?:mute|unmute|on mute|newt)': 'audio.toggle_mute', # don't know why it detects newt
-    # search
-    'search (.+)': 'search',
-    'play music (.+)': 'spotify.search',
-    'play video (.+)': 'youtube.search',
-}
 
 SHORTCUTS = {
     'eg': 'Eugen Cicero',
     'e g': 'Eugen Cicero',
 }
+
+ACTIONS, HANDLERS = {}, {}
+
+def action(name, pattern):
+    def wrapper(f):
+        HANDLERS[name] = f
+        return f
+    if pattern:
+        ACTIONS[pattern] = name
+    return wrapper
+
+# # # # # # # # # # # #
+# define your actions #
+# # # # # # # # # # # #
+
+SCRIPTS = '{}/scripts'.format(getcwd())
 
 def _exec_script(name, args = []):
     try:
@@ -36,6 +30,66 @@ def _exec_script(name, args = []):
         return True
     except Exception:
         return False
+
+# spotify
+
+@action('spotify.next', '^next$')
+def spotify_next():
+    return _exec_script('spotify.next')
+
+@action('spotify.prev', '^previous$')
+def spotify_prev():
+    return _exec_script('spotify.prev')
+
+@action('spotify.toggle_play', '^(play|stop)$')
+def spotify_toggle_play():
+    return _exec_script('spotify.toggle_play')
+
+@action('spotify.search', '^play music (.+)$')
+def spotify_search(*args):
+    return _exec_script('spotify.search', args)
+
+# audio
+
+@action('audio.raise', '^(?:louder|loud)(?:\s+(\d+))?$')
+def audio_raise(*args):
+    return _exec_script('audio.raise', args)
+
+@action('audio.lower', '^(?:quieter|quiet|quite)(?:\s+(\d+))?$')
+def audio_lower(*args):
+    return _exec_script('audio.lower', args)
+
+# don't know why it detects newt
+@action('audio.toggle_mute', '^(?:mute|unmute|on mute|newt)$')
+def audio_toggle_mute():
+    return _exec_script('audio.toggle_mute')
+
+# youtube
+
+@action('youtube.search', '^play video (.+)$')
+def youtube_search(*args):
+    return _exec_script('youtube.search', args)
+
+@action('youtube.close', '^close video$')
+def youtube_close():
+    return _exec_script('youtube.close')
+
+# search
+
+@action('search', '^search (.+)$')
+def google_search(*args):
+    return _exec_script('search', args)
+
+# # # # # # # # # # # # # # # # # # # # # #
+
+def _exec_action(name, args = [], kwargs = {}):
+    f = HANDLERS.get(name, None)
+    if f is not None and callable(f):
+        try:
+            return True if f(*args, **kwargs) else False
+        except Exception:
+            pass
+    return False
 
 def _parse_command(command):
     # TODO:
@@ -58,20 +112,16 @@ def _replace_shortcuts(args):
     return new_args
 
 def exec_command(command):
-    # first: simple one-word commands
+    # first: simple pattern matching commands + one-word commands
     c = command.lower().replace('.', '').strip()
     if not c:
         return False
-    for a in ACTIONS:
-        if c == a:
-            return _exec_script(ACTIONS[a])
-    # second: simple pattern matching commands
-    for p in PATTERN_ACTIONS:
+    for p in ACTIONS:
         m = re.match(p, c)
         if m is not None:
-            return _exec_script(PATTERN_ACTIONS[p], _replace_shortcuts(m.groups()))
-    # third: nlu
+            return _exec_action(ACTIONS[p], _replace_shortcuts(m.groups()))
+    # second: nlu
     p = _parse_command(command)
     if p is None:
         return False
-    return _exec_script(p[0], p[1])
+    return _exec_action(p[0], p[1])
