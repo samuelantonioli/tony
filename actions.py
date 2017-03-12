@@ -32,6 +32,11 @@ PATTERN_ACTIONS = {
     'play video (.+)': 'youtube.search',
 }
 
+SHORTCUTS = {
+    'eg': 'Eugen Cicero',
+    'e g': 'Eugen Cicero',
+}
+
 def _exec_script(name, args = []):
     system('{}/{}.sh {}'.format(SCRIPTS, name, ' '.join(args)))
 
@@ -44,6 +49,16 @@ def _parse_command(command):
     # returns _exec_script tuple: (name, args[])
     # return ('youtube.search', ['rick astley'])
     return None
+
+def _replace_shortcuts(args):
+    new_args = list()
+    keys = SHORTCUTS.keys()
+    for arg in args:
+        if arg in keys:
+            new_args.append(SHORTCUTS[arg])
+        else:
+            new_args.append(arg)
+    return new_args
 
 def exec_command(command):
     # first: simple one-word commands
@@ -58,7 +73,7 @@ def exec_command(command):
     for p in PATTERN_ACTIONS:
         m = re.match(p, c)
         if m is not None:
-            _exec_script(PATTERN_ACTIONS[p], m.groups())
+            _exec_script(PATTERN_ACTIONS[p], _replace_shortcuts(m.groups()))
             return True
     # third: nlu
     p = _parse_command(command)
