@@ -12,4 +12,5 @@ A="$@"
 xdotool type "$A"
 xdotool key Return
 sleep 3
-xdotool mousemove 415 290 click 1
+xdotool mousemove 390 290 click 1
+#xdotool mousemove 415 290 click 1
