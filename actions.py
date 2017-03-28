@@ -26,6 +26,7 @@ SCRIPTS = '{}/scripts'.format(getcwd())
 def _exec_script(name, args = []):
     try:
         args = filter(lambda x: x is not None, args)
+        args = map(lambda x: str(x).replace('\'', '').replace('"', ''), args)
         system('{}/{}.sh {}'.format(SCRIPTS, name, ' '.join(args)))
         return True
     except Exception:
